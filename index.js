@@ -9,7 +9,7 @@ require("firebase/auth");
 require("firebase/firestore");
 
 const retrieve = ()=>{
-  console.log('retreive traces');
+  console.log('retrieve traces');
   let rawRef = fb.firestore().collection('raw');
   //filtar los utlimos emitidos
   let lastemitted = 0;
@@ -18,18 +18,18 @@ const retrieve = ()=>{
   let unsub = current.onSnapshot(qss =>{
     qss.docChanges().forEach(change =>{
       const packet = change.doc.data();
-      if(lastemitted < packet.date.emitted){
-        lastemitted = packet.date.emitted;
+
+      let emitted = packet.date.emitted.toMillis();
+      if(lastemitted < emitted){
+        lastemitted = emitted;
       }
       else{
-        return; //packet atrasado
+        return; //paquete retrasado
       }
-
-      console.log(change.type, packet);
+      let d = new Date(emitted);
+      console.log(d.toLocaleString(), packet.position.latitude, packet.position.longitude);
     });
-  }, error =>{
-    console.error(error);
-  });
+  }, console.error);
 
   process.on("exit", ()=>{
     unsub();
@@ -41,9 +41,11 @@ fb.initializeApp(config);
   
 
 let p = new Promise((res, rej)=>{
-  fb.auth().onAuthStateChanged(credential =>{
-    console.log("user authenticated", credential.operationType);
-    res();
+  fb.auth().onAuthStateChanged(user =>{
+    if(user){
+      console.log("user authenticated", user.uid, user.email);
+      res();
+    }
   });
 });
 p.then(retrieve);
