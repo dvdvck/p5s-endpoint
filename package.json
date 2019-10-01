@@ -1,0 +1,14 @@
+{
+  "name": "p5s-endpoint",
+  "version": "1.0.0",
+  "description": "Consulta de información de recorridos de pumabus",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^7.0.0"
+  }
+}
