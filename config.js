@@ -1,4 +1,4 @@
-exports.firebaseConfig = {
+module.exports = {
   apiKey: "AIzaSyDhasmrsEJYuIGAJVHRWm9cS4cHVfv40WA",
   authDomain: "pumabus-p5s.firebaseapp.com",
   databaseURL: "https://pumabus-p5s.firebaseio.com",
