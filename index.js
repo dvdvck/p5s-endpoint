@@ -17,6 +17,9 @@ const retrieve = ()=>{
 
   let unsub = current.onSnapshot(qss =>{
     qss.docChanges().forEach(change =>{
+      if(change.type != "added"){
+        return;
+      }
       const packet = change.doc.data();
 
       let emitted = packet.date.emitted.toMillis();
@@ -24,10 +27,11 @@ const retrieve = ()=>{
         lastemitted = emitted;
       }
       else{
+        console.log("packet delayed");
         return; //paquete retrasado
       }
       let d = new Date(emitted);
-      console.log(d.toLocaleString(), packet.position.latitude, packet.position.longitude);
+      console.log(d.toLocaleString(), packet.date.diff, "[ms]", packet.position.latitude, packet.position.longitude);
     });
   }, console.error);
 
